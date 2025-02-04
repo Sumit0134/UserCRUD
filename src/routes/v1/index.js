@@ -2,7 +2,11 @@ const express = require("express");
 
 const router = express.Router();
 
-const { createUser, loginUser } = require("../../controllers");
+const { StatusCodes } = require("http-status-codes");
+
+const userModel = require("../../models/userModel");
+
+const { createUser, loginUser, createPost } = require("../../controllers");
 
 const { isLoggedIn } = require("../../middlewares/authMiddleware");
 
@@ -17,8 +21,12 @@ router.get("/logout", (req, res) => {
   res.render("home", { title: serverConfig.APP_NAME + " - Home" });
 });
 
-router.get("/profile", isLoggedIn, (req, res) => {
-  res.render("home", { title: serverConfig.APP_NAME + " - Profile" });
+router.get("/profile", isLoggedIn, async (req, res) => {
+  let user = await userModel.findById(req.user.id).populate("post");
+
+  res.render("profile", { title: serverConfig.APP_NAME + " - Profile", user });
 });
+
+router.post("/createPost", isLoggedIn, createPost);
 
 module.exports = router;

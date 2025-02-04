@@ -15,22 +15,12 @@ const createUser = async (req, res) => {
   password = password.trim();
 
   if (!name || !userName || !email || !password) {
-    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
-      success: false,
-      message: "Please enter all the required fields",
-      data: {},
-      error: {},
-    });
+    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).redirect("/");
   }
 
   let existingUser = await userModel.findOne({ email });
   if (existingUser) {
-    return res.status(StatusCodes.CONFLICT).json({
-      success: false,
-      message: "Account already exists",
-      data: {},
-      error: {},
-    });
+    return res.status(StatusCodes.CONFLICT).redirect("/");
   }
 
   try {
@@ -59,21 +49,12 @@ const createUser = async (req, res) => {
       httpOnly: true,
     });
 
-    res.status(StatusCodes.CREATED).json({
-      success: true,
-      message: "Account created successfully",
-      data: {
-        token,
-      },
-      error: {},
+    res.status(StatusCodes.CREATED).render("profile", {
+      title: process.env.APP_NAME + " - Profile",
+      user: newUser,
     });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: "Something went wrong",
-      data: {},
-      error: error.message,
-    });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).redirect("/");
   }
 };
 

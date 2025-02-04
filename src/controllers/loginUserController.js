@@ -1,7 +1,7 @@
 const userModel = require("../models/userModel");
 
 const { StatusCodes } = require("http-status-codes");
-const brcypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const loginUser = async (req, res) => {
@@ -9,32 +9,17 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
-        success: false,
-        message: "Please enter all the required fields",
-        data: {},
-        error: {},
-      });
+      return res.status(StatusCodes.UNPROCESSABLE_ENTITY).redirect("/");
     }
 
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        success: false,
-        message: "Account does not exist, please create an account",
-        data: {},
-        error: {},
-      });
+      return res.status(StatusCodes.UNAUTHORIZED).redirect("/");
     }
 
-    const isPasswordCorrect = brcypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        success: false,
-        message: "Incorrect password",
-        data: {},
-        error: {},
-      });
+      return res.status(StatusCodes.UNAUTHORIZED).redirect("/");
     }
 
     const token = jwt.sign(
@@ -51,21 +36,12 @@ const loginUser = async (req, res) => {
       httpOnly: true,
     });
 
-    return res.status(StatusCodes.OK).json({
-      success: true,
-      message: "Login successful",
-      data: {
-        user,
-      },
-      error: {},
+    return res.status(StatusCodes.OK).render("profile", {
+      title: "User CRUD - Profile",
+      user,
     });
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: "Something went wrong",
-      data: {},
-      error: error.message,
-    });
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).redirect("/");
   }
 };
 

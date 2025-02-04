@@ -1,3 +1,3 @@
-module.exports={
-    authMiddleware: require("./authMiddleware")
-}
+module.exports = {
+  authMiddleware: require("./authMiddleware"),
+};
