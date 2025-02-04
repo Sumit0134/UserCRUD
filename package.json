@@ -1,0 +1,25 @@
+{
+  "name": "usercrud",
+  "version": "1.0.0",
+  "description": "This is a simple website performing CRUD operations with secure authentication and authorization. ",
+  "keywords": [
+    "CRUD",
+    "user"
+  ],
+  "license": "ISC",
+  "author": "Sumit Kumar Shaw",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "colors": "^1.4.0",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.6"
+  }
+}
