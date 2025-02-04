@@ -1,7 +1,7 @@
 {
   "name": "usercrud",
   "version": "1.0.0",
-  "description": "This is a simple website performing CRUD operations with secure authentication and authorization. ",
+  "description": "This is a simple website performing CRUD operations with secure authentication and authorization.",
   "keywords": [
     "CRUD",
     "user"
@@ -19,7 +19,9 @@
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.6"
+    "mongoose": "^8.9.6",
+    "toastify": "^2.0.1"
   }
 }

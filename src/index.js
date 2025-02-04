@@ -18,9 +18,13 @@ const { serverConfig, databaseConfig } = require("./config");
 
 databaseConfig();
 
+const apiRoutes = require("./routes");
+
 app.get("/", (req, res) => {
   res.render("home", { title: serverConfig.APP_NAME + " - Home" });
 });
+
+app.use("/api", apiRoutes); 
 
 app.listen(serverConfig.PORT, () => {
   console.log(
