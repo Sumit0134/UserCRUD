@@ -1,4 +1,4 @@
-const createUser=require("./createUserController");
-
-module.exports=
-    createUser
+module.exports = {
+  createUser: require("./createUserController"),
+  loginUser: require("./loginUserController"),
+};

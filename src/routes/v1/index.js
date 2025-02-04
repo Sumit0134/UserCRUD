@@ -1,9 +1,18 @@
-const express=require("express");
+const express = require("express");
 
-const router=express.Router();
+const router = express.Router();
 
-const createUser=require("../../controllers");
+const { createUser, loginUser } = require("../../controllers");
 
-router.post("/createUser", createUser);  
+const { serverConfig } = require("../../config");
 
-module.exports=router;
+router.post("/createUser", createUser);
+
+router.post("/loginUser", loginUser);
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.render("home", { title: serverConfig.APP_NAME + " - Home" });
+});
+
+module.exports = router;
