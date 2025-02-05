@@ -1,5 +1,4 @@
-const userModel = require("../models/userModel");
-const postModel = require("../models/postModel");
+const { userModel, postModel } = require("../models");
 
 const { StatusCodes } = require("http-status-codes");
 
@@ -24,6 +23,7 @@ const createPost = async (req, res) => {
     let newPost = await postModel.create({
       user: req.user.id,
       content,
+      likes: [],
     });
 
     user.posts.push(newPost._id);

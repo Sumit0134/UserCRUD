@@ -1,8 +1,8 @@
-const userModel = require("../models/userModel");
-
 const { StatusCodes } = require("http-status-codes");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const userModel = require("../models/userModel");
 
 const loginUser = async (req, res) => {
   try {
@@ -12,7 +12,7 @@ const loginUser = async (req, res) => {
       return res.status(StatusCodes.UNPROCESSABLE_ENTITY).redirect("/");
     }
 
-    const user = await userModel.findOne({ email });
+    const user = await userModel.findOne({ email }).populate("posts");
     if (!user) {
       return res.status(StatusCodes.UNAUTHORIZED).redirect("/");
     }
