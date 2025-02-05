@@ -9,6 +9,8 @@
   </head>
   <body>
     <div class="w-full min-h-screen text-white p-10 bg-zinc-900">
+      <%- include("./partials/header"); %>
+
       <h1 class="text-3xl m-2">Create an Account</h1>
       <form action="/api/v1/createUser" method="post">
         <input
@@ -71,6 +73,8 @@
           Login
         </button>
       </form>
+
+      <%- include("./partials/footer"); %>
     </div>
   </body>
 </html>

@@ -14,6 +14,9 @@ const isLoggedIn = require("../../middlewares/authMiddleware");
 
 const { serverConfig } = require("../../config");
 
+const upload = require("../../config/multer-config");
+
+
 router.post("/createUser", createUser);
 
 router.post("/loginUser", loginUser);
@@ -120,5 +123,36 @@ router.get("/deletePost/:id", isLoggedIn, async (req, res) => {
       .redirect("/api/v1/profile");
   }
 });
+
+router.get("/uploadImage", isLoggedIn, async (req, res) => {
+  res.render("upload", { title: serverConfig.APP_NAME + " - Upload Image" });
+});
+
+router.post("/uploadProfile", isLoggedIn, upload.single("image"), async (req, res) => {
+  try {
+    let user = await userModel.findById(req.user.id);
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).redirect("/api/v1/profile");
+    }
+
+    if (!user.image) {
+      user.image = {}; 
+    }
+
+    if (req.file) {
+      user.image.data = req.file.buffer; 
+      user.image.contentType = req.file.mimetype; 
+    }
+
+    await user.save();
+    return res.status(StatusCodes.OK).redirect("/api/v1/profile");
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .redirect("/api/v1/profile");
+  }
+});
+
 
 module.exports = router;

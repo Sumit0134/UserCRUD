@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+    <div class="w-full min-h-screen text-white p-10 bg-zinc-900">
+      <div class="logout-container flex justify-end">
+        <a
+          class="bg-red-600 px-3 py-2 rounded-md text-white cursor-pointer"
+          href="/api/v1/logout"
+          ><button>Logout</button></a
+        >
+      </div>
+      <%- include("./partials/header"); %>
+
+      <h1 class="text-3xl m-2">Upload Profile Picture</h1>
+      <form action="/api/v1/uploadProfile" method="post" enctype="multipart/form-data">
+        <input
+          class="rounded-md outline-none bg-transparent border-2 border-zinc-800 px-3 py-2 m-2"
+          type="file"
+          name="image"
+        />
+        <button
+          class="rounded-md bg-blue-600 px-8 cursor-pointer py-2 m-2"
+          type="submit"
+        >
+          Upload
+        </button>
+      </form>
+
+      <%- include("./partials/footer"); %>
+    </div>
+  </body>
+</html>

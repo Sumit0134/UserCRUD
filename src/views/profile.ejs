@@ -6,10 +6,50 @@
     <title><%= title %></title>
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+      @media (max-width: 768px) {
+        .post {
+          width: 100% !important;
+        }
+
+        textarea {
+          width: 100% !important;
+        }
+
+        .btns {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        button[type="submit"] {
+          width: 100% !important;
+        }
+
+        .w-full {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        h1,
+        h3,
+        h5 {
+          text-align: center;
+        }
+      }
+
+      .logout-container {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+    </style>
   </head>
-  <body>
-    <div class="w-full min-h-screen text-white p-10 bg-zinc-900">
-      <div class="w-full flex justify-end">
+  <body class="flex flex-col min-h-screen bg-zinc-900 text-white">
+    <!-- Main Wrapper -->
+    <div class="flex-grow p-10">
+      <%- include("./partials/header"); %>
+
+      <div class="logout-container">
         <a
           class="bg-red-600 px-3 py-2 rounded-md text-white cursor-pointer"
           href="/api/v1/logout"
@@ -17,7 +57,18 @@
         >
       </div>
 
-      <h1 class="text-3xl">Hello, <%= user.name %> 👋</h1>
+      <div class="user flex items-start gap-3">
+        <div class="image">
+          <a href="/api/v1/uploadImage">
+            <img
+              src="<%= user.image && user.image.data ? 'data:' + user.image.contentType + ';base64,' + user.image.data.toString('base64') : '/images/default.png' %>"
+              class="w-10 h-10 rounded-md cursor-pointer"
+              alt="Profile Picture"
+            />
+          </a>
+        </div>
+        <h1 class="text-3xl">Hello, <%= user.name %> 👋</h1>
+      </div>
 
       <h5 class="mt-5 mb-3">Create a New Post</h5>
       <form action="/api/v1/createPost" method="post">
@@ -62,5 +113,11 @@
         <% }) %>
       </div>
     </div>
+
+    <footer class="w-full bg-zinc-900 p-4 text-center">
+      <p class="text-light text-sm text-zinc-500">
+        Copyright &copy; 2025 UserCRUD ~ All rights reserved
+      </p>
+    </footer>
   </body>
 </html>

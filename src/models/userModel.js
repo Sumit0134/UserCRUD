@@ -33,6 +33,11 @@ const userSchema = new mongoose.Schema({
       ref: "Post",
     },
   ],
+
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
