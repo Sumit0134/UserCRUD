@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const { serverConfig, databaseConfig, multerConfig } = require("./config");
+const { serverConfig, databaseConfig } = require("./config");
 
 databaseConfig();
 

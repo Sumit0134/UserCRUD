@@ -8,7 +8,19 @@ const { mongoose } = require("mongoose");
 
 const { userModel, postModel } = require("../../models");
 
-const { createUser, loginUser, createPost } = require("../../controllers");
+const {
+  createUser,
+  loginUser,
+  logout,
+  profile,
+  createPost,
+  likePost,
+  editPost,
+  updatePost,
+  deletePost,
+  uploadImage,
+  uploadProfile,
+} = require("../../controllers");
 
 const isLoggedIn = require("../../middlewares/authMiddleware");
 
@@ -16,143 +28,31 @@ const { serverConfig } = require("../../config");
 
 const upload = require("../../config/multer-config");
 
-
 router.post("/createUser", createUser);
 
 router.post("/loginUser", loginUser);
 
-router.get("/logout", (req, res) => {
-  res.clearCookie("token");
-  res.render("home", { title: serverConfig.APP_NAME + " - Home" });
-});
+router.get("/logout", logout);
 
-router.get("/profile", isLoggedIn, async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).redirect("/");
-    }
-
-    res.render("profile", {
-      title: "User CRUD - Profile",
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(500).redirect("/");
-  }
-});
+router.get("/profile", isLoggedIn, profile);
 
 router.post("/createPost", isLoggedIn, createPost);
 
-router.get("/like/:id", isLoggedIn, async (req, res) => {
-  try {
-    let post = await postModel
-      .findById({ _id: req.params.id })
-      .populate("user");
-    if (!post) {
-      return res.status(StatusCodes.NOT_FOUND).redirect("/api/v1/profile");
-    }
+router.get("/like/:id", isLoggedIn, likePost);
 
-    let userId = new mongoose.Types.ObjectId(req.user.id);
+router.get("/editPost/:id", isLoggedIn, editPost);
 
-    if (post.likes.indexOf(userId) === -1) {
-      post.likes.push(req.user.id);
-    } else {
-      post.likes.splice(post.likes.indexOf(req.user.id), 1);
-    }
+router.post("/updatePost/:id", isLoggedIn, updatePost);
 
-    await post.save();
+router.get("/deletePost/:id", isLoggedIn, deletePost);
 
-    return res.status(StatusCodes.OK).redirect("/api/v1/profile");
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .redirect("/api/v1/profile");
-  }
-});
+router.get("/uploadImage", isLoggedIn, uploadImage);
 
-router.get("/editPost/:id", isLoggedIn, async (req, res) => {
-  try {
-    let post = await postModel
-      .findById({ _id: req.params.id })
-      .populate("user");
-    if (!post) {
-      return res.status(StatusCodes.NOT_FOUND).redirect("/api/v1/profile");
-    }
-
-    res.render("edit", { title: serverConfig.APP_NAME + " - Edit Post", post });
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .redirect("/api/v1/profile");
-  }
-});
-
-router.post("/updatePost/:id", isLoggedIn, async (req, res) => {
-  try {
-    let post = await postModel
-      .findById({ _id: req.params.id })
-      .populate("user");
-    if (!post) {
-      return res.status(StatusCodes.NOT_FOUND).redirect("/api/v1/profile");
-    }
-
-    post.content = req.body.content;
-    await post.save();
-    return res.status(StatusCodes.OK).redirect("/api/v1/profile");
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .redirect("/api/v1/profile");
-  }
-});
-
-router.get("/deletePost/:id", isLoggedIn, async (req, res) => {
-  try {
-    let post = await postModel
-      .findById({ _id: req.params.id })
-      .populate("user");
-    if (!post) {
-      return res.status(StatusCodes.NOT_FOUND).redirect("/api/v1/profile");
-    }
-
-    await post.deleteOne();
-    return res.status(StatusCodes.OK).redirect("/api/v1/profile");
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .redirect("/api/v1/profile");
-  }
-});
-
-router.get("/uploadImage", isLoggedIn, async (req, res) => {
-  res.render("upload", { title: serverConfig.APP_NAME + " - Upload Image" });
-});
-
-router.post("/uploadProfile", isLoggedIn, upload.single("image"), async (req, res) => {
-  try {
-    let user = await userModel.findById(req.user.id);
-    if (!user) {
-      return res.status(StatusCodes.NOT_FOUND).redirect("/api/v1/profile");
-    }
-
-    if (!user.image) {
-      user.image = {}; 
-    }
-
-    if (req.file) {
-      user.image.data = req.file.buffer; 
-      user.image.contentType = req.file.mimetype; 
-    }
-
-    await user.save();
-    return res.status(StatusCodes.OK).redirect("/api/v1/profile");
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .redirect("/api/v1/profile");
-  }
-});
-
+router.post(
+  "/uploadProfile",
+  isLoggedIn,
+  upload.single("image"),
+  uploadProfile
+);
 
 module.exports = router;
