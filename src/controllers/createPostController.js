@@ -26,7 +26,7 @@ const createPost = async (req, res) => {
       content,
     });
 
-    user.post.push(newPost._id);
+    user.posts.push(newPost._id);
     await user.save();
 
     return res.status(StatusCodes.CREATED).redirect("/api/v1/profile");

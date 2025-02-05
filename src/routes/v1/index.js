@@ -4,9 +4,20 @@ const router = express.Router();
 
 const { StatusCodes } = require("http-status-codes");
 
-const userModel = require("../../models/userModel");
+const { mongoose } = require("mongoose");
 
-const { createUser, loginUser, createPost } = require("../../controllers");
+const userModel = require("../../models/userModel");
+const postModel = require("../../models/postModel");
+
+const {
+  createUser,
+  loginUser,
+  createPost,
+  likePost,
+  editPost,
+  updatePost,
+  deletePost,
+} = require("../../controllers");
 
 const { isLoggedIn } = require("../../middlewares/authMiddleware");
 
@@ -22,11 +33,19 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/profile", isLoggedIn, async (req, res) => {
-  let user = await userModel.findById(req.user.id).populate("post");
+  let user = await userModel.findById(req.user.id).populate("posts");
 
   res.render("profile", { title: serverConfig.APP_NAME + " - Profile", user });
 });
 
 router.post("/createPost", isLoggedIn, createPost);
+
+router.get("/like/:id", isLoggedIn, likePost);
+
+router.get("/editPost/:id", isLoggedIn, editPost);
+
+router.post("/updatePost/:id", isLoggedIn, updatePost);
+
+router.get("/deletePost/:id", isLoggedIn, deletePost);
 
 module.exports = router;
