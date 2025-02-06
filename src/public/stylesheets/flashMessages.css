@@ -1,0 +1,21 @@
+/* Flash Messages */
+.alert {
+    padding: 12px;
+    margin: 10px auto;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .alert-success {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .alert-danger {
+    background-color: #FF4F4F;
+    color: white;
+  }
+  

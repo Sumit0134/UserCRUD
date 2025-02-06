@@ -2,12 +2,6 @@ const express = require("express");
 
 const router = express.Router();
 
-const { StatusCodes } = require("http-status-codes");
-
-const { mongoose } = require("mongoose");
-
-const { userModel, postModel } = require("../../models");
-
 const {
   createUser,
   loginUser,
@@ -23,8 +17,6 @@ const {
 } = require("../../controllers");
 
 const isLoggedIn = require("../../middlewares/authMiddleware");
-
-const { serverConfig } = require("../../config");
 
 const upload = require("../../config/multer-config");
 

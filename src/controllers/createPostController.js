@@ -6,17 +6,20 @@ const createPost = async (req, res) => {
   try {
     let { content } = req.body;
     if (!content) {
+      req.flash("error", "All fields are required");
       return res
         .status(StatusCodes.UNPROCESSABLE_ENTITY)
         .redirect("/api/v1/profile");
     }
 
     if (!req.user || !req.user.id) {
+      req.flash("error", "You are not logged in");
       return res.status(StatusCodes.UNAUTHORIZED).redirect("/");
     }
 
     let user = await userModel.findById(req.user.id);
     if (!user) {
+      req.flash("error", "You are not logged in");
       return res.status(StatusCodes.UNAUTHORIZED).redirect("/");
     }
 
@@ -29,8 +32,10 @@ const createPost = async (req, res) => {
     user.posts.push(newPost._id);
     await user.save();
 
+    req.flash("success", "Post created successfully");
     return res.status(StatusCodes.CREATED).redirect("/api/v1/profile");
   } catch (error) {
+    req.flash("error", "Something went wrong");
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .redirect("/api/v1/profile");

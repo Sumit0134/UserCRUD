@@ -7,7 +7,7 @@ const logout = async (req, res) => {
 
     const recentPosts=await postModel.find().limit(5).populate("user");
 
-    res.render("home", { title: serverConfig.APP_NAME + " - Home", recentPosts });
+    res.render("home", { title: serverConfig.APP_NAME + " - Home", recentPosts});
   }
 
   module.exports =logout;

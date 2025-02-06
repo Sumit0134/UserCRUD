@@ -6,6 +6,8 @@
     <title><%= title %></title>
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/stylesheets/flashMessages.css">
+    <script src="/javascripts/flashMessages.js"></script>
     <style>
       .logout-container {
         position: absolute;
@@ -64,6 +66,8 @@
   </head>
   <body>
     <div class="w-full min-h-screen text-white p-10 bg-zinc-900">
+
+      <%- include("./partials/flashMessages"); %>
       
       <div class="logout-container">
         <a

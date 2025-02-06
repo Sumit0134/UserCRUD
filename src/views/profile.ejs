@@ -6,6 +6,8 @@
     <title><%= title %></title>
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/stylesheets/flashMessages.css">
+    <script src="/javascripts/flashMessages.js"></script>
     <style>
       @media (max-width: 768px) {
         .post {
@@ -49,6 +51,9 @@
     </style>
   </head>
   <body class="flex flex-col min-h-screen bg-zinc-900 text-white">
+
+    <%- include("./partials/flashMessages"); %>
+    
     <div class="flex-grow p-10">
       <%- include("./partials/header"); %>
 

@@ -15,11 +15,13 @@ const createUser = async (req, res) => {
   password = password.trim();
 
   if (!name || !userName || !email || !password) {
+    req.flash("error", "All fields are required");
     return res.status(StatusCodes.UNPROCESSABLE_ENTITY).redirect("/");
   }
 
   let existingUser = await userModel.findOne({ email });
   if (existingUser) {
+    req.flash("error", "User already exists");
     return res.status(StatusCodes.CONFLICT).redirect("/");
   }
 
@@ -49,11 +51,13 @@ const createUser = async (req, res) => {
       httpOnly: true,
     });
 
+    req.flash("success", "User created successfully");
     res.status(StatusCodes.CREATED).render("profile", {
       title: process.env.APP_NAME + " - Profile",
       user: newUser,
     });
   } catch (error) {
+    req.flash("error", "Something went wrong");
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).redirect("/");
   }
 };

@@ -3,6 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 const profile = async (req, res) => {
     try {
       if (!req.user) {
+        req.flash("error", "You are not logged in");
         return res.status(401).redirect("/");
       }
   
@@ -11,6 +12,7 @@ const profile = async (req, res) => {
         user: req.user,
       });
     } catch (error) {
+      req.flash("error", "Something went wrong");
       res.status(500).redirect("/");
     }
   }

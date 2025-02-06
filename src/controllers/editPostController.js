@@ -10,11 +10,13 @@ const editPost = async (req, res) => {
         .findById({ _id: req.params.id })
         .populate("user");
       if (!post) {
+        req.flash("error", "Post not found");
         return res.status(StatusCodes.NOT_FOUND).redirect("/api/v1/profile");
       }
   
       res.render("edit", { title: serverConfig.APP_NAME + " - Edit Post", post });
     } catch (error) {
+      req.flash("error", "Something went wrong");
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .redirect("/api/v1/profile");
