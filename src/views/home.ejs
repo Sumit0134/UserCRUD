@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   </head>
-  <body>
+  <body class="flex flex-col min-h-screen bg-zinc-900 text-white">
     <div class="w-full min-h-screen text-white p-10 bg-zinc-900">
       <%- include("./partials/header"); %>
 
@@ -74,7 +74,29 @@
         </button>
       </form>
 
-      <%- include("./partials/footer"); %>
+      <h1 class="text-3xl mt-10 mb-3 m-2">Some Recent Posts of Users</h1>
+      <% if (typeof recentPosts !== "undefined" && recentPosts.length > 0) { %>
+        <% recentPosts.forEach(post => { %>
+          <div class="flex flex-wrap gap-3">
+            <div class="p-4 m-2 border border-zinc-800 rounded-md bg-zinc-800">
+              <h2 class="text-xl font-semibold"><%= post.title %></h2>
+              <p class="text-sm text-zinc-400">
+                By <%= post.user ? post.user.name : "Unknown" %> • 
+                <%= post.createdAt ? post.createdAt.toDateString() : "No Date" %>
+              </p>
+              <p class="mt-2"><%= post.content %></p>
+            </div>
+            <% }); %>
+          </div>
+      <% } else { %>
+        <p class="text-zinc-400 m-2">No recent posts available.</p>
+      <% } %>
+      
     </div>
+      <footer class="w-full bg-zinc-900 p-4 mt-10 text-center">
+        <p class="text-light text-sm text-zinc-500">
+          Copyright &copy; 2025 UserCRUD ~ All rights reserved
+        </p>
+      </footer>
   </body>
 </html>

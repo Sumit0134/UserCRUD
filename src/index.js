@@ -6,6 +6,9 @@ const path = require("path");
 
 const colors = require("colors");
 const cookieParser = require("cookie-parser");
+const { StatusCodes } = require("http-status-codes");
+
+const postModel = require("./models/postModel");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -22,8 +25,14 @@ databaseConfig();
 
 const apiRoutes = require("./routes");
 
-app.get("/", (req, res) => {
-  res.render("home", { title: serverConfig.APP_NAME + " - Home" });
+app.get("/", async (req, res) => {
+  try {
+    const recentPosts = await postModel.find().limit(5).populate("user");
+    
+    res.render("home", { title: serverConfig.APP_NAME + " - Home", recentPosts: recentPosts || [] });
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).redirect("/");
+  }
 });
 
 app.use("/api", apiRoutes);

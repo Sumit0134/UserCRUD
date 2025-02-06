@@ -12,6 +12,10 @@
           width: 100% !important;
         }
 
+        .no-posts{
+          text-align: center;
+        }
+
         textarea {
           width: 100% !important;
         }
@@ -45,7 +49,6 @@
     </style>
   </head>
   <body class="flex flex-col min-h-screen bg-zinc-900 text-white">
-    <!-- Main Wrapper -->
     <div class="flex-grow p-10">
       <%- include("./partials/header"); %>
 
@@ -86,6 +89,7 @@
       </form>
 
       <h3 class="text-zinc-600 mt-10">Your Recent Posts</h3>
+      <div class="no-posts text-zinc-600 mt-2"><%= user.posts.length === 0 ? "You have not created any posts" : "" %></div>
       <div class="posts flex flex-wrap gap-3">
         <% user.posts.reverse().forEach((post) => { %>
         <div
@@ -113,7 +117,7 @@
         <% }) %>
       </div>
     </div>
-
+    
     <footer class="w-full bg-zinc-900 p-4 text-center">
       <p class="text-light text-sm text-zinc-500">
         Copyright &copy; 2025 UserCRUD ~ All rights reserved
