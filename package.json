@@ -11,7 +11,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/index.js"
+    "dev": "node src/index.js",
+    "build": "npm install",
+    "start": "node src/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
